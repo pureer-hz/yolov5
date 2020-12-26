@@ -121,20 +121,24 @@ def detect(save_img=False):
 
             # Save results (image with detections)
             if save_img:
-                if dataset.mode == 'images':
-                    cv2.imwrite(save_path, im0)
-                else:
-                    if vid_path != save_path:  # new video
-                        vid_path = save_path
-                        if isinstance(vid_writer, cv2.VideoWriter):
-                            vid_writer.release()  # release previous video writer
+                cv2.imshow(str(p), im0)
+                if cv2.waitKey(1) == ord('q'):  # q to quit
+                    raise StopIteration
 
-                        fourcc = 'mp4v'  # output video codec
-                        fps = vid_cap.get(cv2.CAP_PROP_FPS)
-                        w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-                        h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-                        vid_writer = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*fourcc), fps, (w, h))
-                    vid_writer.write(im0)
+                # if dataset.mode == 'images':
+                #     cv2.imwrite(save_path, im0)
+                # else:
+                #     if vid_path != save_path:  # new video
+                #         vid_path = save_path
+                #         if isinstance(vid_writer, cv2.VideoWriter):
+                #             vid_writer.release()  # release previous video writer
+                #
+                #         fourcc = 'mp4v'  # output video codec
+                #         fps = vid_cap.get(cv2.CAP_PROP_FPS)
+                #         w = int(vid_cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+                #         h = int(vid_cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+                #         vid_writer = cv2.VideoWriter(save_path, cv2.VideoWriter_fourcc(*fourcc), fps, (w, h))
+                #     vid_writer.write(im0)
 
     if save_txt or save_img:
         s = f"\n{len(list(save_dir.glob('labels/*.txt')))} labels saved to {save_dir / 'labels'}" if save_txt else ''
@@ -147,7 +151,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', nargs='+', type=str, default='yolov5s.pt', help='model.pt path(s)')
     parser.add_argument('--source', type=str, default='data/images', help='source')  # file/folder, 0 for webcam
-    parser.add_argument('--img-size', type=int, default=640, help='inference size (pixels)')
+    parser.add_argument('--img-size', type=int, default=240, help='inference size (pixels)')
     parser.add_argument('--conf-thres', type=float, default=0.25, help='object confidence threshold')
     parser.add_argument('--iou-thres', type=float, default=0.45, help='IOU threshold for NMS')
     parser.add_argument('--device', default='', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
